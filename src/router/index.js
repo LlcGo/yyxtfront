@@ -65,14 +65,44 @@ export const constantRoutes = [
         path: 'list',
         name: 'list',
         component: () => import('@/views/hospset/list'),
-        meta: { title: '医院列表', icon: 'table' }
+        meta: { title: '医院设置列表', icon: 'table' }
       },
       {
-        path: 'add',
+        path: 'add/',
         name: 'add',
         component: () => import('@/views/hospset/add'),
         meta: { title: '添加医院', icon: 'tree' }
-      }
+      },
+      {
+        path: 'edit/:id',
+        name: 'edit',
+        component: () => import('@/views/hospset/add'),
+        meta: { title: '编辑', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'hosptal',
+        name: 'hosptal',
+        component: () => import('@/views/hosptal/list.vue'),
+        meta: { title: '医院列表', icon: 'table' }
+      },
+    ]
+  },
+
+  {
+    path: '/dict',
+    component: Layout,
+    redirect: '/dict/list',
+    name: '数据管理',
+    alwaysShow: true,
+    meta: { title: '数据管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'list',
+        name: 'list',
+        component: () => import('@/views/dict/list'),
+        meta: { title: '数据字典', icon: 'table' }
+      },
     ]
   },
 
