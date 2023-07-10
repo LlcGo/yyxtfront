@@ -86,6 +86,13 @@ export const constantRoutes = [
         component: () => import('@/views/hosptal/list.vue'),
         meta: { title: '医院列表', icon: 'table' }
       },
+      {
+        path: 'show/:id',
+        name: 'show',
+        component: () => import('@/views/hosptal/show.vue'),
+        meta: { title: '医院展示', icon: 'table' },
+        hidden: true
+      }
     ]
   },
 

@@ -46,7 +46,7 @@ export function addHospSet(hosp) {
   return request({
     url: '/admin/hosp/hospitalSet/add',
     method: 'put',
-    data: hosp,
+    data: hosp
   })
 }
 

@@ -23,3 +23,17 @@ export function findByParentId(id) {
   })
 }
 
+export function updateStatus(id, status) {
+  return request({
+    url: `/admin/hosp/hospital/update/hospital/${id}/${status}`,
+    method: 'get'
+  })
+}
+
+// 查看医院详情
+export function getHospById(id) {
+  return request({
+    url: `/admin/hosp/hospital/show/hospital/${id}`,
+    method: 'get'
+  })
+}

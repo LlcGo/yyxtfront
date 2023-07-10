@@ -19,7 +19,6 @@
         <el-select
           v-model="searchObj.cityCode"
           placeholder="请选择市"
-          @change="cityChanged"
         >
           <el-option
             v-for="item in cityList"
@@ -30,18 +29,19 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="searchObj.hosname" placeholder="医院名称"/>
+        <el-input v-model="searchObj.hosname" placeholder="医院名称" />
       </el-form-item>
       <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
       <el-button type="default" @click="resetData()">清空</el-button>
     </el-form>
 
     <!-- banner列表 -->
-    <el-table v-loading=" listLoading"
-              :data="list"
-              border
-              fit
-              highlight-current-row
+    <el-table
+      v-loading=" listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
     >
       <el-table-column
         label="序号"
@@ -57,16 +57,21 @@
           <img :src="'data:image/jpeg;base64,'+scope.row.logoData" width="80">
         </template>
       </el-table-column>
-      <el-table-column prop="hosname" label="医院名称"/>
-      <el-table-column prop="param.hostypeString" label="等级" width="90"/>
-      <el-table-column prop="param.fullAddress" label="详情地址"/>
+      <el-table-column prop="hosname" label="医院名称" />
+      <el-table-column prop="param.hospTypeString" label="等级" width="90" />
+      <el-table-column prop="param.fullAddress" label="详情地址" />
       <el-table-column label="状态" width="80">
         <template slot-scope="scope">
           {{ scope.row.status === 0 ? '未上线' : '已上线' }}
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间"/>
+      <el-table-column prop="createTime" label="创建时间" />
       <el-table-column label="操作" width="230" align="center">
+        <template slot-scope="scope">
+          <el-button v-if="scope.row.status == 1" type="primary" size="mini" @click="updateStatus(scope.row.id, 0)">下线</el-button>
+          <el-button v-if="scope.row.status == 0" type="danger" size="mini" @click="updateStatus(scope.row.id, 1)">上线</el-button>
+          <el-button type="primary" size="mini" @click="show(scope.row.id)">查看详情</el-button>
+        </template>
       </el-table-column>
     </el-table>
     <!-- 分页组件 -->
@@ -84,7 +89,9 @@
 </template>
 
 <script>
-import { gethosptList,findByDictCode,findByParentId} from '../../api/hosptal'
+import { gethosptList, findByDictCode, findByParentId, updateStatus } from '../../api/hosptal'
+import router from '@/router'
+
 export default {
   data() {
     return {
@@ -92,18 +99,34 @@ export default {
       limit: 3,
       searchObj: {
         provinceCode: '',
-        cityCode: ''
+        cityCode: '',
+        hosname: ''
       },
       listLoading: false,
       // 接收所有用户信息
       provinceList: [],
       list: [],
       cityList: [],
-      total: 0,
-      districtList: []
+      total: 0
     }
   },
+  created() {
+    this.fetchData()
+    this.getprovinceCode()
+  },
   methods: {
+    // 显示详情页面
+    show(id) {
+      router.push({
+        path: `/hospset/show/${id}`
+      })
+    },
+    // 修改状态
+    updateStatus(id, status) {
+      updateStatus(id, status).then(response => {
+        this.fetchData(this.page)
+      })
+    },
     //   加载banner列表数据
     fetchData(page = 1) {
       console.log('翻页。。。' + page)
@@ -134,15 +157,18 @@ export default {
     provinceChanged() {
       this.cityList = []
       this.searchObj.cityCode = null
-      this.districtList = []
-      this.searchObj.districtCode  =  null
       findByParentId(this.searchObj.provinceCode).then(response => {
+        console.log('findByParentId' + response.data)
         this.cityList = response.data
+      })
+    },
+    getprovinceCode() {
+      findByDictCode('Province').then(response => {
+        this.provinceList = response.data
       })
     }
   }
 }
-
 </script>
 
 <style>
