@@ -92,6 +92,13 @@ export const constantRoutes = [
         component: () => import('@/views/hosptal/show.vue'),
         meta: { title: '医院展示', icon: 'table' },
         hidden: true
+      },
+      {
+        path: 'hospital/schedule/:hoscode',
+        name: '排班',
+        component: () => import('@/views/hosptal/schedule.vue'),
+        meta: { title: '排班', noCache: true },
+        hidden: true
       }
     ]
   },
@@ -109,7 +116,7 @@ export const constantRoutes = [
         name: 'list',
         component: () => import('@/views/dict/list'),
         meta: { title: '数据字典', icon: 'table' }
-      },
+      }
     ]
   },
 

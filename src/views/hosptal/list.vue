@@ -71,6 +71,9 @@
           <el-button v-if="scope.row.status == 1" type="primary" size="mini" @click="updateStatus(scope.row.id, 0)">下线</el-button>
           <el-button v-if="scope.row.status == 0" type="danger" size="mini" @click="updateStatus(scope.row.id, 1)">上线</el-button>
           <el-button type="primary" size="mini" @click="show(scope.row.id)">查看详情</el-button>
+          <router-link :to="'/hospSet/hospital/schedule/'+scope.row.hoscode">
+            <el-button type="primary" size="mini">排班</el-button>
+          </router-link>
         </template>
       </el-table-column>
     </el-table>
@@ -171,5 +174,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.el-tree-node.is-current>.el-tree-node__content{
+  background-color:#409EFF!important;
+  color:white;
+  }
+
+.el-checkbox__input.is-checked+.el-checkbox__label{
+  color:black;
+  }
 </style>
